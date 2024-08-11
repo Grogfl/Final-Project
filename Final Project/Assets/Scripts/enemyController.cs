@@ -5,26 +5,55 @@ using UnityEngine;
 public class enemyController : MonoBehaviour
 {
     public float moveSpeed = 3f;
-    private Transform target;
-    private pointsManager pointsManager;
+    public Transform landingCraft;
+    public float detectionRadius = 5f;
+    private Transform player;
+    private bool isPlayerInRange = false;
+    private float defaultSpeed;
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.FindWithTag("Player").transform;
-        pointsManager = GameObject.FindWithTag("pointsManager").GetComponent<pointsManager>();
+        landingCraft = GameObject.FindGameObjectWithTag("LandingCraft").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        defaultSpeed = moveSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Vector2.Distance(transform.position, player.position) <= detectionRadius)
+        {
+            isPlayerInRange = true;
+        }
+        else
+        {
+            isPlayerInRange = false;
+        }
+
+        Transform target = isPlayerInRange ? player : landingCraft;
+        MoveTowards(target);
+    }
+
+    void MoveTowards(Transform target)
+    {
         if (target != null)
         {
+            Vector2 direction = (target.position - transform.position).normalized;
             transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
         }
     }
-
-    // void onDestroy() not working
-    // {
-    //     pointsManager.AddPoints(10);
-    // }
+    public void ModifySpeed(float slowAmount)
+    {
+        moveSpeed = defaultSpeed * slowAmount;
+    }
+    public void ResetSpeed()
+    {
+        moveSpeed = defaultSpeed;
+    }
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position to visualize the detection radius
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
 }

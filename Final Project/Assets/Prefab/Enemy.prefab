@@ -67,7 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39f667eb59158749929c1f3f474e509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  speed: 3
+  landingCraft: {fileID: 5561315323691266621, guid: d0857ebd9514dc442b5a3c7834523569,
+    type: 3}
+  detectionRadius: 5
 --- !u!61 &-5015821313238468898
 BoxCollider2D:
   m_ObjectHideFlags: 0
