@@ -50,10 +50,16 @@ public class enemyController : MonoBehaviour
     {
         moveSpeed = defaultSpeed;
     }
-    void OnDrawGizmosSelected()
+   void OnTriggerEnter2D(Collider2D other)
     {
-        // Draw a yellow sphere at the transform's position to visualize the detection radius
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        if (other.CompareTag("LandingCraft"))
+        {
+            landingCraft landingCraftHealth = other.GetComponent<landingCraft>();
+            if (landingCraftHealth != null)
+            {
+                landingCraftHealth.TakeDamage(10); // Adjust the damage amount as needed
+            }
+            Destroy(gameObject); // Destroy the enemy after dealing damage
+        }
     }
 }
