@@ -4,42 +4,56 @@ using UnityEngine;
 
 public class turretController : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float fireRate = 1f;
-    private float nextFireTime = 0f;
-    private Transform target;
+    public float detectionRadius = 10f; 
+    public Transform firePoint; 
+    public GameObject bulletPrefab; 
+    public float fireRate = 1f; 
+    private float nextFireTime = 0f; 
 
+    // Update is called once per frame
     void Update()
     {
-        if (Time.time > nextFireTime)
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+        float closestDistance = Mathf.Infinity;
+        Transform closestEnemy = null;
+        foreach (var hitCollider in hitColliders)
         {
-            Shoot();
+            if (hitCollider.CompareTag("Enemy")) 
+            {
+                float distance = Vector2.Distance(transform.position, hitCollider.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = hitCollider.transform;
+                }
+            }
+        }
+        if (closestEnemy != null && Time.time >= nextFireTime)
+        {
             nextFireTime = Time.time + 1f / fireRate;
+            Shoot(closestEnemy); 
         }
     }
 
-    void Shoot()
+    void Shoot(Transform target)
     {
-        if (target != null)
+        Vector2 direction = (target.position - firePoint.position).normalized;
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        if (bullet != null)
         {
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = direction * 15f;
+            }
+            
         }
+        
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnDrawGizmosSelected()
     {
-        if (other.CompareTag("Enemy"))
-        {
-            target = other.transform;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.transform == target)
-        {
-            target = null;
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }
