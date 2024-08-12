@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class landingCraft : MonoBehaviour
 {
     public int maxHealth = 100;
@@ -41,6 +41,7 @@ public class landingCraft : MonoBehaviour
     void Die()
     {
         // Implement what happens when the landing craft is destroyed
+        SceneManager.LoadScene("GameOver");
         Debug.Log("Landing Craft destroyed!");
         // You can add more logic here like ending the game, showing a game over screen, etc.
     }
