@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class playerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
@@ -50,6 +50,7 @@ public class playerController : MonoBehaviour
         else
         {
             Debug.Log("Game Over!");
+            SceneManager.LoadScene("GameOver");
             // Implement game over logic here (e.g., showing a game over screen)
             // For now, we'll just log it
         }

@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 8825650996757696206}
   - component: {fileID: 3364161159097158585}
   - component: {fileID: 2695672785005914240}
-  - component: {fileID: -5601375035307462333}
+  - component: {fileID: -2321350871593989944}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -162,7 +162,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-5601375035307462333
+--- !u!114 &-2321350871593989944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,11 +171,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1923384108514963829}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ae357a0b773dcd429cd658adcd2171b, type: 3}
+  m_Script: {fileID: 11500000, guid: bf3e7df4386ec304184c2a99121d97d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 4
+  detectionRadius: 10
   firePoint: {fileID: 8825650996757696206}
   bulletPrefab: {fileID: 4683729996888977873, guid: 158fab20d30c610458b5376e96dc5ac2,
     type: 3}
-  fireRate: 1.5
+  fireRate: 1

@@ -5,19 +5,30 @@ using UnityEngine;
 public class enemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
-    public float spawnRate = 2f;
+    public float initialSpawnRate = 2f;  // Initial spawn rate (enemies per second)
+    public float spawnRateIncrease = 0.1f; // Rate at which spawn rate increases
+    public float maxSpawnRate = 5f; // Maximum spawn rate
+
+    private float spawnRate;
     private float nextSpawnTime = 0f;
+    private float elapsedTime = 0f; 
     private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
+        spawnRate = initialSpawnRate;
         mainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+
+        // Increase spawn rate over time
+        spawnRate = Mathf.Min(initialSpawnRate + elapsedTime * spawnRateIncrease, maxSpawnRate);
+
         if (Time.time >= nextSpawnTime)
         {
             nextSpawnTime = Time.time + 1f / spawnRate;
