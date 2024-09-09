@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class playerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     private Vector2 movement;
-    private Vector3 respawnPosition;
+    private Vector3 respawnPosition = new Vector3(0, -4, 0);
     private Rigidbody2D rb;
-    public Transform landingCraft;
     public int lives = 3;
-    //public Text livesText;
+    public Text livesText;
     // Start is called before the first frame update
     void Start()
     {
-        respawnPosition = landingCraft.position;
-        //UpdateLivesText();
-        
+        UpdateLives();
     }
 
     // Update is called once per frame
@@ -42,30 +40,27 @@ public class playerController : MonoBehaviour
     void Die()
     {
         lives--;
-        //UpdateLivesText();
+        UpdateLives();
         if (lives > 0)
         {
             Respawn();
         }
         else
         {
-            Debug.Log("Game Over!");
             SceneManager.LoadScene("GameOver");
-            // Implement game over logic here (e.g., showing a game over screen)
-            // For now, we'll just log it
         }
     }
 
     void Respawn()
     {
-        transform.position = respawnPosition; // Move player back to the respawn position
+        transform.position = respawnPosition;
     }
 
-    // void UpdateLivesText()
-    // {
-    //     if (livesText != null)
-    //     {
-    //         livesText.text = "Lives: " + lives;
-    //     }
-    // }
+     void UpdateLives()
+     {
+        if (livesText != null)
+         {
+             livesText.text = "Lives: " + lives;
+         }
+     }
 }

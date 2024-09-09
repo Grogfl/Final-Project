@@ -57,9 +57,9 @@ public class enemyController : MonoBehaviour
             landingCraft landingCraftHealth = other.GetComponent<landingCraft>();
             if (landingCraftHealth != null)
             {
-                landingCraftHealth.TakeDamage(10); // Adjust the damage amount as needed
+                landingCraftHealth.TakeDamage(10);
             }
-            Destroy(gameObject); // Destroy the enemy after dealing damage
+            Destroy(gameObject);
         }
     }
 }

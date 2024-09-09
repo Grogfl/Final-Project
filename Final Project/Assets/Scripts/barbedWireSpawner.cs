@@ -17,13 +17,8 @@ public class barbedWireSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered the spawner range.");
             isPlayerInRange = true;
-            pointsManager = FindObjectOfType<pointsManager>();  // Get the pointsManager in the scene
-            if (pointsManager == null)
-            {
-                Debug.LogError("pointsManager script not found in the scene.");
-            }
+            pointsManager = FindObjectOfType<pointsManager>();  
         }
     }
 
@@ -31,7 +26,6 @@ public class barbedWireSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player exited the spawner range.");
             isPlayerInRange = false;
         }
     }
@@ -41,7 +35,6 @@ public class barbedWireSpawner : MonoBehaviour
     {
        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Interaction key pressed.");
             TrySpawnBarbedWire();
         } 
     }
@@ -49,14 +42,9 @@ public class barbedWireSpawner : MonoBehaviour
     {
         if (pointsManager != null && pointsManager.SpendPoints(barbedWireCost))
         {
-            Debug.Log("Spawning barbed wire.");
             Vector2 spawnPosition = new Vector2(transform.position.x, transform.position.y);
             Instantiate(barbedWirePrefab, spawnPosition, Quaternion.identity);
-            Destroy(gameObject);  // Destroy the spawner after spawning the barbed wire
-        }
-        else
-        {
-            Debug.Log("Not enough points to purchase barbed wire.");
+            Destroy(gameObject); 
         }
     }
 }

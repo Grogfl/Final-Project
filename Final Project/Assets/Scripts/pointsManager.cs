@@ -18,20 +18,15 @@ public class pointsManager : MonoBehaviour
     {
         
     }
-
-   
-
     public void AddPoints(int amount)
     {
         points += amount;
         UpdatePointsText();
     }
-
     public void UpdatePointsText()
     {
         pointsText.text = "Points: " + points;
     }
-
     public bool SpendPoints(int amount)
     {
         if (points >= amount)

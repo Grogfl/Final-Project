@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class landingCraft : MonoBehaviour
 {
     public int maxHealth = 100;
     private int currentHealth;
     //public Text healthText;
+    public Slider healthBar;
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
         //UpdateHealthText();
+        healthBar.maxValue = maxHealth;
+        healthBar.value = currentHealth;
     }
 
     // Update is called once per frame
@@ -22,10 +26,11 @@ public class landingCraft : MonoBehaviour
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+        healthBar.value = currentHealth;
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Die();
+            Kaboom();
         }
         //UpdateHealthText();
     }
@@ -38,11 +43,8 @@ public class landingCraft : MonoBehaviour
     //     }
     // }
 
-    void Die()
+    void Kaboom()
     {
-        // Implement what happens when the landing craft is destroyed
         SceneManager.LoadScene("GameOver");
-        Debug.Log("Landing Craft destroyed!");
-        // You can add more logic here like ending the game, showing a game over screen, etc.
     }
 }

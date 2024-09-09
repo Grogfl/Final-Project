@@ -21,14 +21,13 @@ public class mine : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy triggered mine.");
             
             // if (explosionEffect != null)
             // {
             //     Instantiate(explosionEffect, transform.position, Quaternion.identity);
             // }
-            Destroy(other.gameObject); // Destroy the enemy
-            Destroy(gameObject); // Destroy the mine
+            Destroy(other.gameObject); 
+            Destroy(gameObject); 
         }
     }
 }

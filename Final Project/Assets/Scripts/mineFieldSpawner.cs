@@ -18,13 +18,10 @@ public class mineFieldSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered the spawner range.");
+            
             isPlayerInRange = true;
-            pointsManager = FindObjectOfType<pointsManager>();  // Get the pointsManager in the scene
-            if (pointsManager == null)
-            {
-                Debug.LogError("pointsManager script not found in the scene.");
-            }
+            pointsManager = FindObjectOfType<pointsManager>(); 
+            
         }
     }
 
@@ -32,7 +29,7 @@ public class mineFieldSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player exited the spawner range.");
+            
             isPlayerInRange = false;
         }
     }
@@ -41,7 +38,7 @@ public class mineFieldSpawner : MonoBehaviour
     {
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E)) 
         {
-            Debug.Log("Interaction key pressed.");
+            
             TrySpawnMinefield();
         }
     }
@@ -49,7 +46,7 @@ public class mineFieldSpawner : MonoBehaviour
     {
         if (pointsManager != null && pointsManager.SpendPoints(minefieldCost))
         {
-            Debug.Log("Spawning minefield.");
+            
             for (int i = 0; i < mineCount; i++)
             {
                 Vector2 spawnPosition = new Vector2(
@@ -58,11 +55,8 @@ public class mineFieldSpawner : MonoBehaviour
                 );
                 Instantiate(minePrefab, spawnPosition, Quaternion.identity);
             }
-            Destroy(gameObject);  // Destroy the spawner after spawning the minefield
+            Destroy(gameObject);  
         }
-        else
-        {
-            Debug.Log("Not enough points to purchase minefield.");
-        }
+        
     }
 }

@@ -8,8 +8,13 @@ public class turretController : MonoBehaviour
     public Transform firePoint; 
     public GameObject bulletPrefab; 
     public float fireRate = 1f; 
-    private float nextFireTime = 0f; 
-
+    private float shotDelay = 0f; 
+    public AudioClip shootSFX;
+    private AudioSource audioSource;
+    public Transform turretHead;
+    void Start() {
+        audioSource = GetComponent<AudioSource>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -28,32 +33,38 @@ public class turretController : MonoBehaviour
                 }
             }
         }
-        if (closestEnemy != null && Time.time >= nextFireTime)
+     if (closestEnemy != null)
         {
-            nextFireTime = Time.time + 1f / fireRate;
-            Shoot(closestEnemy); 
+            RotateTurret(closestEnemy.position);
+
+            if (Time.time >= shotDelay)
+            {
+                shotDelay = Time.time + 1f / fireRate;
+                Shoot(closestEnemy);
+            }
         }
+    }
+    void RotateTurret(Vector3 targetPosition)
+    {
+        Vector2 direction = (targetPosition - turretHead.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        turretHead.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     void Shoot(Transform target)
     {
         Vector2 direction = (target.position - firePoint.position).normalized;
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        audioSource.PlayOneShot(shootSFX); 
         if (bullet != null)
         {
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.velocity = direction * 15f;
+                rb.velocity = direction * 25f;
             }
             
         }
         
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

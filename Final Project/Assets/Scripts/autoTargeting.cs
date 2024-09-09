@@ -8,10 +8,16 @@ public class autoTargeting : MonoBehaviour
     public Transform firePoint;
     public GameObject bulletPrefab;
     public float fireRate = 1f;
-    private float nextFireTime = 0f;
+    private float shotDelay = 0f;
+    public AudioClip shootSFX;
+    private AudioSource audioSource;
 
-    public Transform gunTransform; // Reference to the gun's transform
+    public Transform gunTransform; 
 
+
+    void Start(){
+        audioSource = GetComponent<AudioSource>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -32,34 +38,43 @@ public class autoTargeting : MonoBehaviour
         }
         if (closestEnemy != null)
         {
-            // Rotate the gun towards the closest enemy
-            RotateGunTowardsTarget(closestEnemy.position);
+            
+            RotateGun(closestEnemy.position);
 
-            if (Time.time >= nextFireTime)
+            if (Time.time >= shotDelay)
             {
-                nextFireTime = Time.time + 1f / fireRate;
+                shotDelay = Time.time + 1f / fireRate;
                 Shoot(closestEnemy);
             }
         }
     }
 
-    void RotateGunTowardsTarget(Vector3 targetPosition)
+  void RotateGun(Vector3 targetPosition)
+{
+    Vector2 direction = (targetPosition - gunTransform.position).normalized;
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    gunTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    if (angle > 90 || angle < -90)
     {
-        Vector2 direction = (targetPosition - gunTransform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        gunTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        gunTransform.localScale = new Vector3(1, -1, 1);
     }
+    else
+    {
+        gunTransform.localScale = new Vector3(1, 1, 1);  
+    }
+}
 
     void Shoot(Transform target)
     {
         Vector2 direction = (target.position - firePoint.position).normalized;
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        audioSource.PlayOneShot(shootSFX);
         if (bullet != null)
         {
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.velocity = direction * 15f;
+                rb.velocity = direction * 25f;
             }
         }
     }

@@ -5,12 +5,12 @@ using UnityEngine;
 public class enemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
-    public float initialSpawnRate = 2f;  // Initial spawn rate (enemies per second)
-    public float spawnRateIncrease = 0.1f; // Rate at which spawn rate increases
-    public float maxSpawnRate = 5f; // Maximum spawn rate
+    public float initialSpawnRate = 2f;  
+    public float spawnRateIncrease = 0.1f; 
+    public float maxSpawnRate = 5f; 
 
     private float spawnRate;
-    private float nextSpawnTime = 0f;
+    private float nextSpawn = 0f;
     private float elapsedTime = 0f; 
     private Camera mainCamera;
 
@@ -25,24 +25,21 @@ public class enemySpawner : MonoBehaviour
     void Update()
     {
         elapsedTime += Time.deltaTime;
-
-        // Increase spawn rate over time
         spawnRate = Mathf.Min(initialSpawnRate + elapsedTime * spawnRateIncrease, maxSpawnRate);
-
-        if (Time.time >= nextSpawnTime)
+        if (Time.time >= nextSpawn)
         {
-            nextSpawnTime = Time.time + 1f / spawnRate;
+            nextSpawn = Time.time + 1f / spawnRate;
             SpawnEnemy();
         }
     }
 
     void SpawnEnemy()
     {
-        Vector2 spawnPosition = GetRandomSpawnPositionOutsideScreen();
+        Vector2 spawnPosition = RandomSpawnPos();
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
-   Vector2 GetRandomSpawnPositionOutsideScreen()
+   Vector2 RandomSpawnPos()
     {
         float cameraHeight = 2f * mainCamera.orthographicSize;
         float cameraWidth = cameraHeight * mainCamera.aspect;
@@ -53,21 +50,18 @@ public class enemySpawner : MonoBehaviour
         float minY = mainCamera.transform.position.y - cameraHeight / 2 - 1f;
         float maxY = mainCamera.transform.position.y + cameraHeight / 2 + 1f;
 
-        int side = Random.Range(0, 4);
+        int side = Random.Range(0, 3);
         Vector2 spawnPosition = Vector2.zero;
         switch (side)
         {
-            case 0: // Left
-                spawnPosition = new Vector2(minX, Random.Range(minY, maxY));
-                break;
-            case 1: // Right
-                spawnPosition = new Vector2(maxX, Random.Range(minY, maxY));
-                break;
-            case 2: // Top
+            case 0: 
                 spawnPosition = new Vector2(Random.Range(minX, maxX), maxY);
                 break;
-            case 3: // Bottom
-                spawnPosition = new Vector2(Random.Range(minX, maxX), minY);
+            case 1: 
+                spawnPosition = new Vector2(minX, Random.Range((minY + maxY) / 2, maxY));
+                break;
+            case 2: 
+                spawnPosition = new Vector2(maxX, Random.Range((minY + maxY) / 2, maxY));
                 break;
         }
 

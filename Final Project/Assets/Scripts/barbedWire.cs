@@ -20,7 +20,6 @@ public class barbedWire : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy entered barbed wire.");
             enemyController enemyScript = other.GetComponent<enemyController>();
             if (enemyScript != null)
             {
@@ -33,7 +32,6 @@ public class barbedWire : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy exited barbed wire.");
             enemyController enemyScript = other.GetComponent<enemyController>();
             if (enemyScript != null)
             {
